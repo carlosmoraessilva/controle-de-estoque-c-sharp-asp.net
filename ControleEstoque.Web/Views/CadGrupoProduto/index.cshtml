@@ -184,7 +184,7 @@
             .on('click', '.btn-alterar', function () {
                 var btn = $(this),
                     id = btn.closest('tr').attr('data-id'),
-                    url = '@Url.Action("RecuperarGrupoProduto", "Cadastro")',
+                    url = '@Url.Action("RecuperarGrupoProduto", "CadGrupoProduto")',
                     param = { 'id': id };
                 $.post(url, add_anti_forgery_token(param), function (response) {
                     if (response) {
@@ -196,7 +196,7 @@
                 var btn = $(this),
                     tr = btn.closest('tr'),
                     id = tr.attr('data-id'),
-                    url = '@Url.Action("ExcluirGrupoProduto", "Cadastro")',
+                    url = '@Url.Action("ExcluirGrupoProduto", "CadGrupoProduto")',
                     param = { 'id': id };
                 bootbox.confirm({
                     message: "Realmente deseja excluir o grupo de produto?",
@@ -223,7 +223,7 @@
             })
             .on('click', '#btn_confirmar', function () {
                 var btn = $(this),
-                    url = '@Url.Action("SalvarGrupoProduto", "Cadastro")',
+                    url = '@Url.Action("SalvarGrupoProduto", "CadGrupoProduto")',
                     param = {
                         Id: $('#id_cadastro').val(),
                         Nome: $('#txt_nome').val(),
@@ -259,28 +259,29 @@
                 });
             })
             .on('click', '.page-item', function () {
-                var btn = $(this),
-                    pagina = btn.text(),
-                    url = '@Url.Action("GrupoProdutoPagina", "Cadastro")',
-                    param = { 'pagina': pagina, 'tamPag': tamPag };
-                $.post(url, add_anti_forgery_token({ pa }), function (response) {
-                    if (response) {
-                        var table = $('#grid_cadastro').find('tbody');
-                        table.empty();
-                        for (var i = 0; i < response.length; i++) {
-                            table.append(criar_linha_grid(response[i]));
-                        }
-                        btn.siblings().removeClass('active');
-                        btn.addClass('active');
+            var btn = $(this),
+                tamPag = $('#ddl_tam_pag').val(),
+                pagina = btn.text(),
+                url = '@Url.Action("GrupoProdutoPagina", "CadGrupoProduto")',
+                param = { 'pagina': pagina, 'tamPag': tamPag };
+            $.post(url, add_anti_forgery_token(param), function (response) {
+                if (response) {
+                    var table = $('#grid_cadastro').find('tbody');
+                    table.empty();
+                    for (var i = 0; i < response.length; i++) {
+                        table.append(criar_linha_grid(response[i]));
                     }
-                });
-            })
+                    btn.siblings().removeClass('active');
+                    btn.addClass('active');
+                }
+            });
+        })
 
            .on('change', '#ddl_tam_pag', function () {
             var ddl = $(this),
                 tamPag = ddl.val(),
                 pagina = 1,
-                url = '@Url.Action("GrupoProdutoPagina", "Cadastro")',
+                url = '@Url.Action("GrupoProdutoPagina", "CadGrupoProduto")',
                 param = { 'pagina': pagina, 'tamPag': tamPag };
 
             $.post(url, add_anti_forgery_token(param), function (response)  {
